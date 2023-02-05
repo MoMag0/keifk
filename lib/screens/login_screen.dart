@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../Widgets/auth_components/auth_button.dart';
 import '../widgets/auth_components/auth_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'contacts_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,6 +14,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _auth = FirebaseAuth.instance;
+
+  String signInText = 'Sign In';
   late String email;
   late String password;
   @override
@@ -65,11 +71,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   // Sign in button
                   AuthButton(
-                      theFunction: () {
-                        print(email);
-                        print(password);
+                      theFunction: () async {
+                        try {
+                          final user = await _auth.signInWithEmailAndPassword(
+                              email: email, password: password);
+                          // ignore: unnecessary_null_comparison
+                          if (user != null) {
+                            // ignore: use_build_context_synchronously
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const ContactsScreen(),
+                              ),
+                            );
+                          }
+                        } catch (e) {
+                          print(e);
+                        }
                       },
-                      text: 'Sign In'),
+                      text: signInText),
                 ],
               ),
             ],

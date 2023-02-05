@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keifk/screens/welcome_screen.dart';
 
 import '../database/colors.dart';
 import '../widgets/contact_screen_components/contacts_view.dart';
@@ -13,6 +14,7 @@ class ContactsScreen extends StatefulWidget {
 
 class _ContactsScreenState extends State<ContactsScreen> {
   final _auth = FirebaseAuth.instance;
+
   late User loginUser;
 
   @override
@@ -54,7 +56,14 @@ class _ContactsScreenState extends State<ContactsScreen> {
               icon: const Icon(Icons.search, color: Colors.white, size: 28),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                _auth.signOut();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const WelcomeScreen(),
+                  ),
+                );
+              },
               icon: const Icon(Icons.close, color: Colors.white, size: 28),
             ),
           ],
