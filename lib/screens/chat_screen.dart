@@ -14,7 +14,7 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leadingWidth: MediaQuery.of(context).size.width * 0.25,
+          leadingWidth: MediaQuery.of(context).size.width * 0.251,
           leading: Expanded(
             child: Row(
               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
