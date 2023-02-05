@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 
 class AuthField extends StatelessWidget {
   final String text;
-  const AuthField({super.key, required this.text});
+  final bool crypt;
+  final ValueChanged<String> onchange;
+
+  const AuthField({super.key, required this.text, required this.crypt, required this.onchange});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 10),
       child: TextField(
+        obscureText: crypt,
+        onChanged: onchange,
         textAlign: TextAlign.center,
-        onChanged: (value) {},
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.all(14),
           border: OutlineInputBorder(
@@ -18,10 +22,10 @@ class AuthField extends StatelessWidget {
             borderSide: BorderSide.none,
           ),
           filled: true,
-          fillColor: const Color.fromARGB(192, 227, 226, 226),
+          fillColor: const Color.fromARGB(192, 125, 84, 26),
           hintText: text,
           hintStyle: const TextStyle(
-              fontSize: 13, color: Color.fromARGB(179, 85, 85, 85)),
+              fontSize: 13, color: Color.fromARGB(179, 220, 220, 220)),
         ),
       ),
     );

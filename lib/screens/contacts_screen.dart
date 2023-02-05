@@ -2,9 +2,36 @@ import 'package:flutter/material.dart';
 
 import '../database/colors.dart';
 import '../widgets/contact_screen_components/contacts_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class ContactsScreen extends StatelessWidget {
+class ContactsScreen extends StatefulWidget {
   const ContactsScreen({super.key});
+
+  @override
+  State<ContactsScreen> createState() => _ContactsScreenState();
+}
+
+class _ContactsScreenState extends State<ContactsScreen> {
+  final _auth = FirebaseAuth.instance;
+  late User loginUser;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() {
+    final user = _auth.currentUser;
+    try {
+      if (user != null) {
+        loginUser = user;
+        print(loginUser.email);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../Widgets/auth_components/auth_button.dart';
 import '../widgets/auth_components/auth_field.dart';
-import 'contacts_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  late String email;
+  late String password;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -43,16 +49,25 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const AuthField(text: 'Enter your email'),
-                  const AuthField(text: 'Enter your passowrd'),
+                  AuthField(
+                    text: 'Enter your email',
+                    crypt: false,
+                    onchange: (value) {
+                      email = value;
+                    },
+                  ),
+                  AuthField(
+                    text: 'Enter your passowrd',
+                    crypt: true,
+                    onchange: (value) {
+                      password = value;
+                    },
+                  ),
                   // Sign in button
                   AuthButton(
                       theFunction: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const ContactsScreen(),
-                          ),
-                        );
+                        print(email);
+                        print(password);
                       },
                       text: 'Sign In'),
                 ],
