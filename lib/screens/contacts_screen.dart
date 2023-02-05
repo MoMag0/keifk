@@ -41,12 +41,13 @@ class _ContactsScreenState extends State<ContactsScreen> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           toolbarHeight: 61,
           backgroundColor: appBarColor,
           elevation: 0,
-          title: const Text(
-            'Kaif Halik',
-            style: TextStyle(
+          title: Text(
+            loginUser.email.toString(),
+            style: const TextStyle(
                 color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
           ),
           actions: [

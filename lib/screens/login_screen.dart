@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../Widgets/auth_components/auth_button.dart';
 import '../widgets/auth_components/auth_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import 'contacts_screen.dart';
 
@@ -15,7 +16,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _auth = FirebaseAuth.instance;
-
+  bool _isInAsyncCall = false;
   String signInText = 'Sign In';
   late String email;
   late String password;
@@ -36,62 +37,73 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
-          body: ListView(
-            children: [
-              const SizedBox(
-                height: 70,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  //logo
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.4,
-                      child: const Image(
-                        image: AssetImage("assets/kaifhaliklogo.png"),
+          body: ModalProgressHUD(
+            inAsyncCall: _isInAsyncCall,
+            opacity: 0.5,
+            progressIndicator: const CircularProgressIndicator(),
+            child: ListView(
+              children: [
+                const SizedBox(
+                  height: 70,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    //logo
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.4,
+                        child: const Image(
+                          image: AssetImage("assets/kaifhaliklogo.png"),
+                        ),
                       ),
                     ),
-                  ),
-                  AuthField(
-                    text: 'Enter your email',
-                    crypt: false,
-                    onchange: (value) {
-                      email = value;
-                    },
-                  ),
-                  AuthField(
-                    text: 'Enter your passowrd',
-                    crypt: true,
-                    onchange: (value) {
-                      password = value;
-                    },
-                  ),
-                  // Sign in button
-                  AuthButton(
-                      theFunction: () async {
-                        try {
-                          final user = await _auth.signInWithEmailAndPassword(
-                              email: email, password: password);
-                          // ignore: unnecessary_null_comparison
-                          if (user != null) {
-                            // ignore: use_build_context_synchronously
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const ContactsScreen(),
-                              ),
-                            );
-                          }
-                        } catch (e) {
-                          print(e);
-                        }
+                    AuthField(
+                      text: 'Enter your email',
+                      crypt: false,
+                      onchange: (value) {
+                        email = value;
                       },
-                      text: signInText),
-                ],
-              ),
-            ],
+                    ),
+                    AuthField(
+                      text: 'Enter your passowrd',
+                      crypt: true,
+                      onchange: (value) {
+                        password = value;
+                      },
+                    ),
+                    // Sign in button
+                    AuthButton(
+                        theFunction: () async {
+                          try {
+                            setState(() {
+                              _isInAsyncCall = true;
+                            });
+                            final user = await _auth.signInWithEmailAndPassword(
+                                email: email, password: password);
+                            // ignore: unnecessary_null_comparison
+                            if (user != null) {
+                              // ignore: use_build_context_synchronously
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const ContactsScreen(),
+                                ),
+                              );
+                            }
+                          } catch (e) {
+                            setState(() {
+                              _isInAsyncCall = false;
+                            });
+                            print(e);
+                          }
+                        },
+                        text: signInText),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ],
