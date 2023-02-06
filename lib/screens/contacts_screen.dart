@@ -14,7 +14,6 @@ class ContactsScreen extends StatefulWidget {
 
 class _ContactsScreenState extends State<ContactsScreen> {
   final _auth = FirebaseAuth.instance;
-
   late User loginUser;
 
   @override
@@ -29,6 +28,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
       if (user != null) {
         loginUser = user;
         print(loginUser.email);
+        print(" login successfuly");
       }
     } catch (e) {
       print(e);

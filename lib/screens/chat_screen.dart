@@ -3,12 +3,42 @@ import 'package:flutter/material.dart';
 import '../database/colors.dart';
 import '../widgets/chat_screen_components/chat_view.dart';
 import '../widgets/chat_screen_components/input_message_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
+  //chat bar reviever information
   final String userName;
   final String userPhoto;
   const ChatScreen(
       {super.key, required this.userName, required this.userPhoto});
+
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  // create firebase to initiate 'sender' with its messages
+  final _auth = FirebaseAuth.instance;
+  late User loginUser;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+  //to recognize user
+  void getCurrentUser() {
+    final user = _auth.currentUser;
+    try {
+      if (user != null) {
+        loginUser = user;
+        print(loginUser.email);
+        print("has entered the chat sceeen");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +58,14 @@ class ChatScreen extends StatelessWidget {
                   ),
                 ),
                 CircleAvatar(
-                  backgroundImage: NetworkImage(userPhoto),
+                  backgroundImage: NetworkImage(widget.userPhoto),
                   radius: 20,
                 ),
               ],
             ),
           ),
-          title: Text(userName),
+          title: Text(
+              widget.userName), //will replaced with reciever mail inshaAllah
           //centerTitle: true,
           backgroundColor: appBarColor,
           // end of chat profile bar icons
@@ -70,9 +101,11 @@ class ChatScreen extends StatelessWidget {
             ),
           ),
           child: Column(
-            children: const [
-              ChatView(),
-              InputMessegeField(),
+            children: [
+              const ChatView(),
+              InputMessegeField(
+                userMail: loginUser,
+              ),
             ],
           ),
         ));

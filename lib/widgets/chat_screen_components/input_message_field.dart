@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 
 import '../../database/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class InputMessegeField extends StatelessWidget {
-  const InputMessegeField({super.key});
+  final User userMail;
 
+  final _firestore = FirebaseFirestore.instance;
+
+  InputMessegeField({
+    super.key,
+    required this.userMail,
+  });
+
+  String? userMessage;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,31 +33,34 @@ class InputMessegeField extends StatelessWidget {
               ),
             ),
             child: TextField(
+              onChanged: (value) {
+                userMessage = value;
+              },
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.all(14),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
                   borderSide: BorderSide.none,
                 ),
-                filled: true,
+                filled: false,
                 fillColor: searchBarColor,
                 hintText: 'Type a message',
-                hintStyle: const TextStyle(fontSize: 13),
+                focusColor: Colors.white,
+                hintStyle: const TextStyle(fontSize: 13, color: Colors.white),
                 prefixIcon: const Icon(
                   Icons.emoji_emotions_outlined,
                   color: Colors.white60,
                 ),
-                suffixIcon: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: const [
-                      Icon(Icons.camera_alt, color: Colors.grey),
-                      Icon(Icons.attach_file, color: Colors.grey),
-                      Icon(Icons.money, color: Colors.grey),
-                    ],
-                  ),
-                ),
+                suffixIcon: IconButton(
+                    onPressed: () {
+                      _firestore.collection('messages').add(
+                        {
+                          'text': userMessage,
+                          'sender': userMail.email,
+                        },
+                      );
+                    },
+                    icon: const Icon(Icons.send, color: Colors.grey),),
               ),
             ),
           ),
