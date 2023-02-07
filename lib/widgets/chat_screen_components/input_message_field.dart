@@ -9,6 +9,13 @@ class InputMessegeField extends StatelessWidget {
 
   final _firestore = FirebaseFirestore.instance;
 
+  void getMessages() async {
+    final messages = await _firestore.collection('messages').get();
+    for (var message in messages.docs) {
+      print(message.data());
+    }
+  }
+
   InputMessegeField({
     super.key,
     required this.userMail,
@@ -52,15 +59,17 @@ class InputMessegeField extends StatelessWidget {
                   color: Colors.white60,
                 ),
                 suffixIcon: IconButton(
-                    onPressed: () {
-                      _firestore.collection('messages').add(
-                        {
-                          'text': userMessage,
-                          'sender': userMail.email,
-                        },
-                      );
-                    },
-                    icon: const Icon(Icons.send, color: Colors.grey),),
+                  onPressed: () {
+                    _firestore.collection('messages').add(
+                      {
+                        'text': userMessage,
+                        'sender': userMail.email,
+                      },
+                    );
+                    getMessages();
+                  },
+                  icon: const Icon(Icons.send, color: Colors.grey),
+                ),
               ),
             ),
           ),
