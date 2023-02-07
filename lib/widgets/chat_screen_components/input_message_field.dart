@@ -9,10 +9,19 @@ class InputMessegeField extends StatelessWidget {
 
   final _firestore = FirebaseFirestore.instance;
 
-  void getMessages() async {
-    final messages = await _firestore.collection('messages').get();
-    for (var message in messages.docs) {
-      print(message.data());
+  // void getMessages() async { // this method used to get messages manually ' on click refresh '
+  //   final messages = await _firestore.collection('messages').get();
+  //   for (var message in messages.docs) {
+  //     print(message.data());
+  //   }
+  // }
+
+  void getMessagesStresam() async {
+    // this method used to push messages automateculy from firestore :) >
+    await for (var snapshot in _firestore.collection('messages').snapshots()) {
+      for (var message in snapshot.docs) {
+        print(message.data());
+      }
     }
   }
 
@@ -66,7 +75,7 @@ class InputMessegeField extends StatelessWidget {
                         'sender': userMail.email,
                       },
                     );
-                    getMessages();
+                    getMessagesStresam();
                   },
                   icon: const Icon(Icons.send, color: Colors.grey),
                 ),

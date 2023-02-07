@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../database/colors.dart';
-import '../widgets/chat_screen_components/chat_view.dart';
 import '../widgets/chat_screen_components/input_message_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatScreen extends StatefulWidget {
   //chat bar reviever information
@@ -19,6 +19,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   // create firebase to initiate 'sender' with its messages
   final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
   late User loginUser;
 
   @override
@@ -26,6 +27,7 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     getCurrentUser();
   }
+
   //to recognize user
   void getCurrentUser() {
     final user = _auth.currentUser;
@@ -102,7 +104,34 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           child: Column(
             children: [
-              const ChatView(),
+              Expanded(
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: _firestore.collection('messages').snapshots(),
+                  builder: (context, snapshot) {
+                    List<Text> messageWidgets = [];
+
+                    if (!snapshot.hasData) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+
+                    final messages = snapshot.data!.docs;
+                    for (var message in messages) {
+                      final messageText = message.get('text');
+                      final messageSender = message.get('sender');
+                      final messageWidget =
+                          Text('$messageSender: $messageText');
+                      messageWidgets.add(messageWidget);
+                    }
+
+                    return Column(
+                      children: messageWidgets,
+                    );
+                  },
+                ),
+              ),
+              //const ChatView(),
               InputMessegeField(
                 userMail: loginUser,
               ),
