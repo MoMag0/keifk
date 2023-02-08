@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:keifk/widgets/chat_screen_components/my_message_card.dart';
+import 'package:keifk/widgets/messages_screen_components/his_message_card.dart';
+import 'package:keifk/widgets/messages_screen_components/input_message_field.dart';
+import 'package:keifk/widgets/messages_screen_components/my_message_card.dart';
 
 import '../database/colors.dart';
-import '../widgets/chat_screen_components/his_message_card.dart';
-import '../widgets/chat_screen_components/input_message_field.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ChatScreen extends StatefulWidget {
-  
+class MessagesScreen extends StatefulWidget {
   final String groupName;
   final String groupPhoto;
-  const ChatScreen(
+  const MessagesScreen(
       {super.key, required this.groupName, required this.groupPhoto});
 
   @override
-  State<ChatScreen> createState() => _ChatScreenState();
+  State<MessagesScreen> createState() => _MessagesScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
-  
+class _MessagesScreenState extends State<MessagesScreen> {
   // create firebase to initiate 'sender' with its messages
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;

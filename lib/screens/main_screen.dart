@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:keifk/screens/welcome_screen.dart';
 
 import '../database/colors.dart';
-import '../widgets/contact_screen_components/contacts_view.dart';
+import '../widgets/main_page_components/contacts_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class ContactsScreen extends StatefulWidget {
-  const ContactsScreen({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  State<ContactsScreen> createState() => _ContactsScreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _ContactsScreenState extends State<ContactsScreen> {
+class _MainScreenState extends State<MainScreen> {
   final _auth = FirebaseAuth.instance;
   late User loginUser;
 

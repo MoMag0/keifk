@@ -4,7 +4,7 @@ import '../widgets/auth_components/auth_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-import 'contacts_screen.dart';
+import 'main_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -77,17 +77,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     // Sign in button
                     AuthButton(
                         theFunction: () async {
-                          
                           try {
                             setState(() {
-                            _isInAsyncCall = true;
-                          });
+                              _isInAsyncCall = true;
+                            });
                             final newUser =
                                 await _auth.createUserWithEmailAndPassword(
                                     email: email, password: password);
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => const ContactsScreen(),
+                                builder: (context) => const MainScreen(),
                               ),
                             );
                             setState(() {

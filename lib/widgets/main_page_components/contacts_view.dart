@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../database/colors.dart';
 import '../../database/info.dart';
-import '../../screens/chat_screen.dart';
+import '../../screens/messages_screen.dart';
 
 class ContactsView extends StatelessWidget {
   final bool isMobile;
@@ -21,7 +21,7 @@ class ContactsView extends StatelessWidget {
                 if (isMobile) {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => ChatScreen(
+                      builder: (context) => MessagesScreen(
                         groupName: info[index]['name'].toString(),
                         groupPhoto: info[index]['profilePic'].toString(),
                       ),

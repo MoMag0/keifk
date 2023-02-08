@@ -5,7 +5,7 @@ import '../widgets/auth_components/auth_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-import 'contacts_screen.dart';
+import 'main_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               // ignore: use_build_context_synchronously
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => const ContactsScreen(),
+                                  builder: (context) => const MainScreen(),
                                 ),
                               );
                             }
