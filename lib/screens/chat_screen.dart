@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:keifk/widgets/chat_screen_components/my_message_card.dart';
 
 import '../database/colors.dart';
+import '../widgets/chat_screen_components/his_message_card.dart';
 import '../widgets/chat_screen_components/input_message_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatScreen extends StatefulWidget {
-  //chat bar reviever information
-  final String userName;
-  final String userPhoto;
+  
+  final String groupName;
+  final String groupPhoto;
   const ChatScreen(
-      {super.key, required this.userName, required this.userPhoto});
+      {super.key, required this.groupName, required this.groupPhoto});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  
   // create firebase to initiate 'sender' with its messages
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
@@ -45,98 +48,111 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leadingWidth: MediaQuery.of(context).size.width * 0.251,
-          leading: Expanded(
-            child: Row(
-              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: const Icon(Icons.arrow_back_ios_rounded),
-                  ),
-                ),
-                CircleAvatar(
-                  backgroundImage: NetworkImage(widget.userPhoto),
-                  radius: 20,
-                ),
-              ],
-            ),
-          ),
-          title: Text(
-              widget.userName), //will replaced with reciever mail inshaAllah
-          //centerTitle: true,
-          backgroundColor: appBarColor,
-          // end of chat profile bar icons
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.video_call,
-                color: Colors.white,
-              ),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.call,
-                color: Colors.white,
-              ),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.more_vert,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
-        body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/backgroundImage.png"),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Column(
+      appBar: AppBar(
+        leadingWidth: MediaQuery.of(context).size.width * 0.251,
+        leading: Expanded(
+          child: Row(
+            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: _firestore.collection('messages').snapshots(),
-                  builder: (context, snapshot) {
-                    List<Text> messageWidgets = [];
-
-                    if (!snapshot.hasData) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-
-                    final messages = snapshot.data!.docs;
-                    for (var message in messages) {
-                      final messageText = message.get('text');
-                      final messageSender = message.get('sender');
-                      final messageWidget =
-                          Text('$messageSender: $messageText');
-                      messageWidgets.add(messageWidget);
-                    }
-
-                    return Column(
-                      children: messageWidgets,
-                    );
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
                   },
+                  icon: const Icon(Icons.arrow_back_ios_rounded),
                 ),
               ),
-              //const ChatView(),
-              InputMessegeField(
-                userMail: loginUser,
+              CircleAvatar(
+                backgroundImage: NetworkImage(widget.groupPhoto),
+                radius: 20,
               ),
             ],
           ),
-        ));
+        ),
+        title: Text(
+            widget.groupName), //will replaced with reciever mail inshaAllah
+        //centerTitle: true,
+        backgroundColor: appBarColor,
+        // end of chat profile bar icons
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.video_call,
+              color: Colors.white,
+            ),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.call,
+              color: Colors.white,
+            ),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.more_vert,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+      body: ListView(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height * 0.84,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/welcomewallpaper.jpg"),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Expanded(
+              child: ListView(
+                //shrinkWrap: true,
+                children: [
+                  StreamBuilder<QuerySnapshot>(
+                    stream: _firestore.collection('messages').snapshots(),
+                    builder: (context, snapshot) {
+                      List<Widget> messageWidgets = [];
+
+                      if (!snapshot.hasData) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+
+                      final messages = snapshot.data!.docs;
+                      for (var message in messages) {
+                        if (message.get('sender') == loginUser.email) {
+                          if (message.get('text') != null) {
+                            messageWidgets.add(
+                              MyMessageCard(
+                                  myText: message.get('text'),
+                                  myMail: loginUser.email!),
+                            );
+                          }
+                        } else {
+                          messageWidgets.add(HisMessageCard(
+                              hisText: message.get('text'),
+                              hisMail: message.get('sender')));
+                        }
+                      }
+                      return Column(
+                        children: messageWidgets,
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          InputMessegeField(
+            userMail: loginUser,
+          ),
+        ],
+      ),
+    );
   }
 }

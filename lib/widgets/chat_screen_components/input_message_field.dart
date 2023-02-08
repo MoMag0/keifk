@@ -9,13 +9,6 @@ class InputMessegeField extends StatelessWidget {
 
   final _firestore = FirebaseFirestore.instance;
 
-  // void getMessages() async { // this method used to get messages manually ' on click refresh '
-  //   final messages = await _firestore.collection('messages').get();
-  //   for (var message in messages.docs) {
-  //     print(message.data());
-  //   }
-  // }
-
   void getMessagesStresam() async {
     // this method used to push messages automateculy from firestore :) >
     await for (var snapshot in _firestore.collection('messages').snapshots()) {

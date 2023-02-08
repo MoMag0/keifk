@@ -22,8 +22,8 @@ class ContactsView extends StatelessWidget {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => ChatScreen(
-                        userName: info[index]['name'].toString(),
-                        userPhoto: info[index]['profilePic'].toString(),
+                        groupName: info[index]['name'].toString(),
+                        groupPhoto: info[index]['profilePic'].toString(),
                       ),
                     ),
                   );

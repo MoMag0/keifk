@@ -75,8 +75,8 @@ class _ContactsScreenState extends State<ContactsScreen> {
             unselectedLabelColor: Colors.grey,
             labelStyle: TextStyle(fontWeight: FontWeight.bold),
             tabs: [
+              Tab(text: 'GROUPS'),
               Tab(text: 'CHATS'),
-              Tab(text: 'STATUS'),
               Tab(text: 'CALLS'),
             ],
           ),
