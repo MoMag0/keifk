@@ -111,7 +111,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
               //shrinkWrap: true,
               children: [
                 StreamBuilder<QuerySnapshot>(
-                  stream: _firestore.collection('messages').snapshots(),
+                  stream: _firestore.collection('messages').orderBy('time').snapshots(),
                   builder: (context, snapshot) {
                     List<Widget> messageWidgets = [];
 
@@ -121,7 +121,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       );
                     }
 
-                    final messages = snapshot.data!.docs;
+                    final messages = snapshot.data!.docs.reversed;
                     for (var message in messages) {
                       if (message.get('sender') == loginUser.email) {
                         if (message.get('text') != null) {
@@ -139,6 +139,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     }
                     return Expanded(
                       child: ListView(
+                        reverse: true,
                         children: messageWidgets,
                       ),
                     );

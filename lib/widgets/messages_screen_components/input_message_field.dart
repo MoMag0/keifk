@@ -10,15 +10,6 @@ class InputMessegeField extends StatelessWidget {
 
   final _firestore = FirebaseFirestore.instance;
 
-  void getMessagesStresam() async {
-    // this method used to push messages automateculy from firestore :) >
-    await for (var snapshot in _firestore.collection('messages').snapshots()) {
-      for (var message in snapshot.docs) {
-        print(message.data());
-      }
-    }
-  }
-
   InputMessegeField({
     super.key,
     required this.userMail,
@@ -68,9 +59,9 @@ class InputMessegeField extends StatelessWidget {
                       {
                         'text': userMessage,
                         'sender': userMail.email,
+                        'time': FieldValue.serverTimestamp(),
                       },
                     );
-                    getMessagesStresam();
                     textFieldController.clear();
                   },
                   icon: const Icon(Icons.send, color: Colors.grey),
