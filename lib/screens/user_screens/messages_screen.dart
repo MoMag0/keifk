@@ -100,55 +100,55 @@ class _MessagesScreenState extends State<MessagesScreen> {
       body: ListView(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.84,
+            height: MediaQuery.of(context).size.height * 0.90325,
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/welcomewallpaper.jpg"),
                 fit: BoxFit.cover,
               ),
             ),
-            child: Expanded(
-              child: ListView(
-                //shrinkWrap: true,
-                children: [
-                  StreamBuilder<QuerySnapshot>(
-                    stream: _firestore.collection('messages').snapshots(),
-                    builder: (context, snapshot) {
-                      List<Widget> messageWidgets = [];
+            child: Column(
+              //shrinkWrap: true,
+              children: [
+                StreamBuilder<QuerySnapshot>(
+                  stream: _firestore.collection('messages').snapshots(),
+                  builder: (context, snapshot) {
+                    List<Widget> messageWidgets = [];
 
-                      if (!snapshot.hasData) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-
-                      final messages = snapshot.data!.docs;
-                      for (var message in messages) {
-                        if (message.get('sender') == loginUser.email) {
-                          if (message.get('text') != null) {
-                            messageWidgets.add(
-                              MyMessageCard(
-                                  myText: message.get('text'),
-                                  myMail: loginUser.email!),
-                            );
-                          }
-                        } else {
-                          messageWidgets.add(HisMessageCard(
-                              hisText: message.get('text'),
-                              hisMail: message.get('sender')));
-                        }
-                      }
-                      return Column(
-                        children: messageWidgets,
+                    if (!snapshot.hasData) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
                       );
-                    },
-                  ),
-                ],
-              ),
+                    }
+
+                    final messages = snapshot.data!.docs;
+                    for (var message in messages) {
+                      if (message.get('sender') == loginUser.email) {
+                        if (message.get('text') != null) {
+                          messageWidgets.add(
+                            MyMessageCard(
+                                myText: message.get('text'),
+                                myMail: loginUser.email!),
+                          );
+                        }
+                      } else {
+                        messageWidgets.add(HisMessageCard(
+                            hisText: message.get('text'),
+                            hisMail: message.get('sender')));
+                      }
+                    }
+                    return Expanded(
+                      child: ListView(
+                        children: messageWidgets,
+                      ),
+                    );
+                  },
+                ),
+                InputMessegeField(
+                  userMail: loginUser,
+                ),
+              ],
             ),
-          ),
-          InputMessegeField(
-            userMail: loginUser,
           ),
         ],
       ),
