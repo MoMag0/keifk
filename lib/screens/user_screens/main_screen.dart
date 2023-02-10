@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:keifk/screens/welcome_screen.dart';
+import 'package:keifk/screens/auth_screens/welcome_screen.dart';
 
-import '../database/colors.dart';
-import '../widgets/main_page_components/contacts_view.dart';
+import '../../database/colors.dart';
+import '../../widgets/main_page_components/contacts_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class MainScreen extends StatefulWidget {

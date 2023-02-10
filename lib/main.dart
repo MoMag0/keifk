@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:keifk/screens/welcome_screen.dart';
+import 'package:keifk/screens/auth_screens/welcome_screen.dart';
 import 'database/colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 

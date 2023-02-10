@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../database/colors.dart';
 import '../../database/info.dart';
-import '../../screens/messages_screen.dart';
+import '../../screens/user_screens/messages_screen.dart';
 
 class ContactsView extends StatelessWidget {
   final bool isMobile;

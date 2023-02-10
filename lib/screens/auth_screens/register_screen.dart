@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
-
-import '../Widgets/auth_components/auth_button.dart';
-import '../widgets/auth_components/auth_field.dart';
+import '../../Widgets/auth_components/auth_button.dart';
+import '../../widgets/auth_components/auth_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-import 'main_screen.dart';
+import '../user_screens/main_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
+  // create the auth object that we will use its methods later to authintacte
   final _auth = FirebaseAuth.instance;
-  bool _isInAsyncCall = false;
-  String signInText = 'Sign In';
   late String email;
   late String password;
+  // loading widget
+  bool _isInAsyncCall = false;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -81,17 +81,17 @@ class _LoginScreenState extends State<LoginScreen> {
                             setState(() {
                               _isInAsyncCall = true;
                             });
-                            final user = await _auth.signInWithEmailAndPassword(
-                                email: email, password: password);
-                            // ignore: unnecessary_null_comparison
-                            if (user != null) {
-                              // ignore: use_build_context_synchronously
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => const MainScreen(),
-                                ),
-                              );
-                            }
+                            final newUser =
+                                await _auth.createUserWithEmailAndPassword(
+                                    email: email, password: password);
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const MainScreen(),
+                              ),
+                            );
+                            setState(() {
+                              _isInAsyncCall = false;
+                            });
                           } catch (e) {
                             setState(() {
                               _isInAsyncCall = false;
@@ -99,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             print(e);
                           }
                         },
-                        text: signInText),
+                        text: 'Sign Up'),
                   ],
                 ),
               ],

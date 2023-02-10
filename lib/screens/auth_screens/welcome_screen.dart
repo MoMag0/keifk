@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:keifk/screens/register_screen.dart';
+import 'package:keifk/screens/auth_screens/register_screen.dart';
 
-import '../Widgets/auth_components/auth_button.dart';
+import '../../Widgets/auth_components/auth_button.dart';
 import 'login_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {

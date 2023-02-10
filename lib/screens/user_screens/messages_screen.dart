@@ -3,7 +3,7 @@ import 'package:keifk/widgets/messages_screen_components/his_message_card.dart';
 import 'package:keifk/widgets/messages_screen_components/input_message_field.dart';
 import 'package:keifk/widgets/messages_screen_components/my_message_card.dart';
 
-import '../database/colors.dart';
+import '../../database/colors.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
