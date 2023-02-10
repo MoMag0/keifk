@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:keifk/screens/auth_screens/register_screen.dart';
-
 import '../../Widgets/auth_components/auth_button.dart';
 import 'login_screen.dart';
 
@@ -64,6 +63,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     );
                   },
                   text: 'Sign Up'),
+              
             ],
           ),
         ),

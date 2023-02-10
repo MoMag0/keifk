@@ -16,14 +16,19 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   // create the auth object that we will use its methods later to authintacte
   final _auth = FirebaseAuth.instance;
+
+  // define input field for login page
   late String email;
   late String password;
-  // loading widget
+
+  // to know weitehr the app is loading to get user data from firebase
   bool _isInAsyncCall = false;
   @override
   Widget build(BuildContext context) {
+    // we start with stack to make a wallpaper theme
     return Stack(
       children: [
+        // most back on stack < wallpaper >
         Expanded(
           // wallpaper
           child: Container(
@@ -35,13 +40,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
         ),
+        // Scaffold to put login page components
         Scaffold(
+          // transparent to make wallpaper on most back appears.
           backgroundColor: Colors.transparent,
+          //To use loading circle, we should make it upper or father of page components
           body: ModalProgressHUD(
-            inAsyncCall: _isInAsyncCall,
+            inAsyncCall:
+                _isInAsyncCall, // make it appears while async true. 'in getting messages mode'
             opacity: 0.5,
             progressIndicator: const CircularProgressIndicator(),
+            //the register components
             child: ListView(
+              // listview to make it error prone when open keyboard
               children: [
                 const SizedBox(
                   height: 70,
@@ -50,7 +61,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    //logo
+                    //lApp ogo
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: SizedBox(
@@ -60,6 +71,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                     ),
+                    // email text field
                     AuthField(
                       text: 'Enter your email',
                       crypt: false,
@@ -67,6 +79,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         email = value;
                       },
                     ),
+                    // Password text field
                     AuthField(
                       text: 'Enter your passowrd',
                       crypt: true,
@@ -74,13 +87,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         password = value;
                       },
                     ),
-                    // Sign in button
+                    // register  button < with visiting firebase >
                     AuthButton(
                         theFunction: () async {
                           try {
                             setState(() {
+                              // activite async bool , due to searching process in firebase
                               _isInAsyncCall = true;
                             });
+                            // await for _auth object to create the user with given arguments
+
                             final newUser =
                                 await _auth.createUserWithEmailAndPassword(
                                     email: email, password: password);
@@ -90,16 +106,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             );
                             setState(() {
+                              // end of process ? close loading widget
                               _isInAsyncCall = false;
                             });
                           } catch (e) {
                             setState(() {
+                              // even if there error, close the widget put dont push to main page
                               _isInAsyncCall = false;
                             });
                             print(e);
                           }
                         },
                         text: 'Sign Up'),
+                    // back to welcome page
+                    AuthButton(
+                        theFunction: () {
+                          Navigator.of(context).pop();
+                        },
+                        text: 'Back'),
                   ],
                 ),
               ],
