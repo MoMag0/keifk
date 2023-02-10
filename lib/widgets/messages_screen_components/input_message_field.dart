@@ -4,9 +4,9 @@ import '../../database/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 class InputMessegeField extends StatelessWidget {
   final User userMail;
+  final textFieldController = TextEditingController();
 
   final _firestore = FirebaseFirestore.instance;
 
@@ -43,6 +43,7 @@ class InputMessegeField extends StatelessWidget {
               ),
             ),
             child: TextField(
+              controller: textFieldController,
               onChanged: (value) {
                 userMessage = value;
               },
@@ -70,6 +71,7 @@ class InputMessegeField extends StatelessWidget {
                       },
                     );
                     getMessagesStresam();
+                    textFieldController.clear();
                   },
                   icon: const Icon(Icons.send, color: Colors.grey),
                 ),
