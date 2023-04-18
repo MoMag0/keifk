@@ -13,7 +13,7 @@ https://docs.flutter.dev/get-started/install
 1- User Authentication: Users can securely sign up, sign in, and authenticate using Firebase authentication services, ensuring that only authorized users can access the app.
 
 <img src="https://user-images.githubusercontent.com/65549274/232426171-98476bbc-0206-4764-b880-6a4520bf3d21.png" width="400">
-<img src="" width="400">
+
 
 
 2- Real-time Chat: Users can send and receive messages in real-time, allowing for instant communication with other users, creating a dynamic and interactive chat experience.
